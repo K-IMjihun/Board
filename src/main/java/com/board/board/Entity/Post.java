@@ -2,13 +2,13 @@ package com.board.board.Entity;
 
 
 import com.board.board.Dto.RequestDto;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@ToString
+@EqualsAndHashCode(of = "id")
 public class Post {
     private Long id;
     private String title;
@@ -17,11 +17,14 @@ public class Post {
     private String contents;
 
     public Post(RequestDto requestDto) {
-        this.id = requestDto.getId();
         this.title = requestDto.getTitle();
         this.name = requestDto.getName();
-        this.PW = requestDto.getPW();
+        this.PW = requestDto.getPassword();
         this.contents = requestDto.getContents();
+
+    }
+
+    public Post() {
 
     }
 }
