@@ -28,8 +28,14 @@ public class PostService {
     }
 
 
-    public List<PostResponseDto> getPost() {
+    public List<PostResponseDto> getPosts() {
         return postRepository.findAllByOrderByModifiedAtDesc().stream().map(PostResponseDto::new).toList();
+    }
+
+    public PostResponseDto getPost(Long id) {
+        Post post = findPost(id);
+        PostResponseDto postResponseDto = new PostResponseDto(post);
+        return postResponseDto;
     }
 
     @Transactional
@@ -60,6 +66,7 @@ public class PostService {
             }
             return id;
         }
+
 
 
 
