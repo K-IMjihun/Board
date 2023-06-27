@@ -1,9 +1,9 @@
 package com.board.board.Controller;
 
 
+import com.board.board.Dto.PasswordDto;
 import com.board.board.Dto.PostRequestDto;
 import com.board.board.Dto.PostResponseDto;
-import com.board.board.Entity.Post;
 import com.board.board.Service.PostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +18,7 @@ public class PostController {
     private final PostService postService;
 
     public PostController(PostService postService){
+
         this.postService = postService;
     }
 
@@ -45,13 +46,8 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public Long deleteMemo(@PathVariable Long id) {
-
-        return postService.deletePost(id);
+    public Long deleteMemo(@PathVariable Long id, @RequestBody PasswordDto passwordDto) {
+        return postService.deletePost(id, passwordDto);
     }
 
-    private Post findById(Long id) {
-        return null;
-        // DB 조회
-    }
 }
