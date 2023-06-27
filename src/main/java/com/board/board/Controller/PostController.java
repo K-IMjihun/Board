@@ -31,10 +31,10 @@ public class PostController {
 
     //- 제목, 작성자명, 작성 내용, 작성 날짜를 조회하기
     //- 작성 날짜 기준 내림차순으로 정렬하기
-    @GetMapping()
+    @GetMapping
     public List<PostResponseDto> getPosts() {
         // DB 조회
-       return null;
+       return postService.getPost();
     }
 
     @PutMapping("/{id}")

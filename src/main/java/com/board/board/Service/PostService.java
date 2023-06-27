@@ -6,6 +6,8 @@ import com.board.board.Repository.PostRepository;
 import com.board.board.Dto.PostResponseDto;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PostService {
     private final PostRepository postRepository;
@@ -20,5 +22,9 @@ public class PostService {
 
         PostResponseDto postResponseDto = new PostResponseDto(post);
         return postResponseDto;
+    }
+
+    public List<PostResponseDto> getPost() {
+        return postRepository.findAllByOrderByModifiedAtDesc().stream().map(PostResponseDto::new).toList();
     }
 }
