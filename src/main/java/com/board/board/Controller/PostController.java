@@ -1,7 +1,8 @@
 package com.board.board.Controller;
 
 
-import com.board.board.Dto.PasswordDto;
+import com.board.board.Dto.DeleteResponseDto;
+import com.board.board.Dto.PasswordRequestDto;
 import com.board.board.Dto.PostRequestDto;
 import com.board.board.Dto.PostResponseDto;
 import com.board.board.Service.PostService;
@@ -43,15 +44,15 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public Long updatePost(@PathVariable(value = "id") Long id, @RequestBody PostRequestDto postRequestDto) {
+    public PostResponseDto updatePost(@PathVariable(value = "id") Long id, @RequestBody PostRequestDto postRequestDto) {
         // 해당 메모가 DB에 존재하는지 확인
 
         return postService.putPost(id, postRequestDto);
     }
 
     @DeleteMapping("/{id}")
-    public Long deleteMemo(@PathVariable Long id, @RequestBody PasswordDto passwordDto) {
-        return postService.deletePost(id, passwordDto);
+    public DeleteResponseDto deleteMemo(@PathVariable Long id, @RequestBody PasswordRequestDto passwordRequestDto) {
+        return postService.deletePost(id, passwordRequestDto);
     }
 
 }

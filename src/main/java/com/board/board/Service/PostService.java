@@ -1,6 +1,7 @@
 package com.board.board.Service;
 
-import com.board.board.Dto.PasswordDto;
+import com.board.board.Dto.DeleteResponseDto;
+import com.board.board.Dto.PasswordRequestDto;
 import com.board.board.Dto.PostRequestDto;
 import com.board.board.Entity.Post;
 import com.board.board.Repository.PostRepository;
@@ -39,32 +40,37 @@ public class PostService {
     }
 
     @Transactional
-    public Long putPost(Long id, PostRequestDto requestDto) {
+    public PostResponseDto putPost(Long id, PostRequestDto requestDto) {
 //          해당 메모가 DB에 존재하는지 확인
             Post post = findPost(id);
-
-            // 비밀번호 확인
-            if(post.getPW().equals(requestDto.getPassword())) {
-                post.update(requestDto);
-            }
-            else{
-                throw new IllegalArgumentException("비밀번호가 틀립니다");
-            }
-            return id;
-       }
-
-    public Long deletePost(Long id, PasswordDto passwordDto) {
-        // 해당 메모가 DB에 존재하는지 확인
-            Post post = findPost(id);
+            PostResponseDto postResponseDto;
 
         // 비밀번호 확인
-            if(post.getPW().equals(passwordDto.getPassword())) {
-                postRepository.delete(post);
+            if(post.getPW().equals(requestDto.getPassword())) {
+                post.update(requestDto);
+
+                postResponseDto = new PostResponseDto(post);
             }
             else{
                 throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
             }
-            return id;
+            return postResponseDto;
+       }
+
+    public DeleteResponseDto deletePost(Long id, PasswordRequestDto passwordRequestDto) {
+        // 해당 메모가 DB에 존재하는지 확인
+            Post post = findPost(id);
+            DeleteResponseDto deleteResponseDto = new DeleteResponseDto();
+
+        // 비밀번호 확인
+            if(post.getPW().equals(passwordRequestDto.getPassword())) {
+                postRepository.delete(post);
+                deleteResponseDto.setSuccess(true);
+            }
+            else{
+                throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
+            }
+            return deleteResponseDto;
         }
 
 
@@ -72,6 +78,6 @@ public class PostService {
 
     private Post findPost(Long id){
         return postRepository.findById(id).orElseThrow(() ->
-                new RuntimeException("선택한 게시글이 존재하지 않습니다."));
+                new IllegalArgumentException("선택한 게시글이 존재하지 않습니다."));
     }
 }
