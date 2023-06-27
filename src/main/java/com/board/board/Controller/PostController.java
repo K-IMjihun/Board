@@ -38,10 +38,10 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public PostResponseDto updatePost(@PathVariable(value = "id") Long id, @RequestBody PostRequestDto postRequestDto) {
+    public Long updatePost(@PathVariable(value = "id") Long id, @RequestBody PostRequestDto postRequestDto) {
         // 해당 메모가 DB에 존재하는지 확인
-//        ResponseDto
-        return null;
+
+        return postService.putPost(id, postRequestDto);
     }
 
     @DeleteMapping("/{id}")

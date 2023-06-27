@@ -5,6 +5,7 @@ import com.board.board.Entity.Post;
 import com.board.board.Repository.PostRepository;
 import com.board.board.Dto.PostResponseDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,7 +25,23 @@ public class PostService {
         return postResponseDto;
     }
 
+
     public List<PostResponseDto> getPost() {
         return postRepository.findAllByOrderByModifiedAtDesc().stream().map(PostResponseDto::new).toList();
+    }
+
+    @Transactional
+    public Long putPost(Long id, PostRequestDto requestDto) {
+        //해당 메모가 DB에 존재하는지 확인
+        Post post = findPost(id);
+
+        post.update(requestDto);
+
+        return id;
+    }
+
+    private Post findPost(Long id){
+        return postRepository.findById(id).orElseThrow(() ->
+                new RuntimeException("선택한 게시글이 존재하지 않습니다."));
     }
 }
