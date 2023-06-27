@@ -1,7 +1,6 @@
 package com.board.board.Dto;
 
 import com.board.board.Entity.Post;
-import com.board.board.Entity.Timestamped;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

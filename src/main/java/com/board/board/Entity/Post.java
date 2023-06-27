@@ -2,7 +2,6 @@ package com.board.board.Entity;
 
 
 import com.board.board.Dto.PostRequestDto;
-import com.board.board.Dto.PostResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
 
