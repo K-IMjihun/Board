@@ -47,7 +47,7 @@ public class PostController {
     @DeleteMapping("/{id}")
     public Long deleteMemo(@PathVariable Long id) {
 
-        return null;
+        return postService.deletePost(id);
     }
 
     private Post findById(Long id) {

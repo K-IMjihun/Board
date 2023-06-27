@@ -40,8 +40,15 @@ public class PostService {
         return id;
     }
 
+    public Long deletePost(Long id) {
+        Post post = findPost(id);
+
+        postRepository.delete(post);
+        return id;
+    }
     private Post findPost(Long id){
         return postRepository.findById(id).orElseThrow(() ->
                 new RuntimeException("선택한 게시글이 존재하지 않습니다."));
     }
+
 }
