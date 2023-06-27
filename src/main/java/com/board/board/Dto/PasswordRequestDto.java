@@ -3,6 +3,6 @@ package com.board.board.Dto;
 import lombok.Data;
 
 @Data
-public class PasswordDto {
+public class PasswordRequestDto {
         private String password;
 }
