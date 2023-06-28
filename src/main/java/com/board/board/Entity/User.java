@@ -23,8 +23,12 @@ public class User {
     @Size(min = 8, max = 15, message = "길이는 8글자 이상, 15글자 이하여야 합니다.")
     private String password;
 
+    @Column
+    private boolean login;
+
     public User(UserRequestDto userRequestDto) {
         this.username = userRequestDto.getUsername();
         this.password = userRequestDto.getPassword();
     }
+
 }
