@@ -1,4 +1,4 @@
-package com.board.board.Dto;
+package com.board.board.Dto.PostDto;
 
 import lombok.Data;
 
