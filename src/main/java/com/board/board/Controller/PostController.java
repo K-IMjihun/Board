@@ -1,19 +1,13 @@
 package com.board.board.Controller;
+import com.board.board.Dto.PostDto.*;
 
-
-import com.board.board.Dto.DeleteResponseDto;
-import com.board.board.Dto.PasswordRequestDto;
-import com.board.board.Dto.PostRequestDto;
-import com.board.board.Dto.PostResponseDto;
 import com.board.board.Service.PostService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/posts")
-@Slf4j
 public class PostController {
 
     private final PostService postService;
@@ -51,8 +45,8 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public DeleteResponseDto deleteMemo(@PathVariable Long id, @RequestBody PasswordRequestDto passwordRequestDto) {
-        return postService.deletePost(id, passwordRequestDto);
+    public DeleteResponseDto deleteMemo(@PathVariable Long id, @RequestBody DeleteRequestDto deleteRequestDto) {
+        return postService.deletePost(id, deleteRequestDto);
     }
 
 }

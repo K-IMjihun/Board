@@ -1,4 +1,4 @@
-package com.board.board.Dto;
+package com.board.board.Dto.PostDto;
 
 import com.board.board.Entity.Post;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class PostResponseDto {
     private Long id;
     private String title;
-    private String name;
+    private String username;
     private String contents;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
@@ -19,7 +19,7 @@ public class PostResponseDto {
     public PostResponseDto(Post post) {
         this.id = post.getId();
         this.title = post.getTitle();
-        this.name = post.getName();
+        this.username = post.getUsername();
         this.contents = post.getContents();
         this.createdAt = post.getCreatedAt();
         this.modifiedAt = post.getModifiedAt();
