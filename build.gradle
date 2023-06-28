@@ -23,6 +23,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     // MySQL
     implementation 'mysql:mysql-connector-java:8.0.28'
+    // 빈 검증기(Bean Calidator)
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
 
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
