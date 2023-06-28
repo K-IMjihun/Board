@@ -1,11 +1,11 @@
 package com.board.board.Service;
 
-import com.board.board.Dto.DeleteResponseDto;
-import com.board.board.Dto.PasswordRequestDto;
-import com.board.board.Dto.PostRequestDto;
+import com.board.board.Dto.PostDto.DeleteResponseDto;
+import com.board.board.Dto.PostDto.DeleteRequestDto;
+import com.board.board.Dto.PostDto.PostRequestDto;
 import com.board.board.Entity.Post;
 import com.board.board.Repository.PostRepository;
-import com.board.board.Dto.PostResponseDto;
+import com.board.board.Dto.PostDto.PostResponseDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,13 +57,14 @@ public class PostService {
             return postResponseDto;
        }
 
-    public DeleteResponseDto deletePost(Long id, PasswordRequestDto passwordRequestDto) {
+    public DeleteResponseDto deletePost(Long id, DeleteRequestDto deleteRequestDto) {
         // 해당 메모가 DB에 존재하는지 확인
             Post post = findPost(id);
             DeleteResponseDto deleteResponseDto = new DeleteResponseDto();
+        deleteResponseDto.setSuccess(false);
 
         // 비밀번호 확인
-            if(post.getPW().equals(passwordRequestDto.getPassword())) {
+            if(post.getPW().equals(deleteRequestDto.getPassword())) {
                 postRepository.delete(post);
                 deleteResponseDto.setSuccess(true);
             }
