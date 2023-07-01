@@ -1,6 +1,5 @@
 package com.board.board.Entity;
 
-import com.board.board.Dto.UserDto.UserRequestDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -23,12 +22,15 @@ public class User {
     @Size(min = 8, max = 15, message = "길이는 8글자 이상, 15글자 이하여야 합니다.")
     private String password;
 
-    @Column
-    private boolean login;
+    @Column(nullable = false)
+    //사용자의 권한
+    @Enumerated(value = EnumType.STRING)
+    private UserRoleEnum role;
 
-    public User(UserRequestDto userRequestDto) {
-        this.username = userRequestDto.getUsername();
-        this.password = userRequestDto.getPassword();
+
+    public User(String username, String password, String email, UserRoleEnum role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
     }
-
 }
