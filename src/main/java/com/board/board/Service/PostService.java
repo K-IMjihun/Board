@@ -1,23 +1,22 @@
 package com.board.board.Service;
 
-import com.board.board.Dto.PostDto.DeleteResponseDto;
 import com.board.board.Dto.PostDto.DeleteRequestDto;
+import com.board.board.Dto.PostDto.DeleteResponseDto;
 import com.board.board.Dto.PostDto.PostRequestDto;
+import com.board.board.Dto.PostDto.PostResponseDto;
 import com.board.board.Entity.Post;
 import com.board.board.Repository.PostRepository;
-import com.board.board.Dto.PostDto.PostResponseDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
 
-    public PostService(PostRepository postRepository) {
-        this.postRepository = postRepository;
-    }
 
     public PostResponseDto createPost(PostRequestDto postRequestDto) {
         Post post = new Post(postRequestDto);
@@ -46,14 +45,14 @@ public class PostService {
             PostResponseDto postResponseDto;
 
         // 비밀번호 확인
-            if(post.getPW().equals(requestDto.getPassword())) {
+//            if(post.getPW().equals(requestDto.getPassword())) {
                 post.update(requestDto);
 
                 postResponseDto = new PostResponseDto(post);
-            }
-            else{
-                throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
-            }
+//            }
+//            else{
+//                throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
+//            }
             return postResponseDto;
        }
 
@@ -64,13 +63,13 @@ public class PostService {
         deleteResponseDto.setSuccess(false);
 
         // 비밀번호 확인
-            if(post.getPW().equals(deleteRequestDto.getPassword())) {
+//            if(post.getPW().equals(deleteRequestDto.getPassword())) {
                 postRepository.delete(post);
                 deleteResponseDto.setSuccess(true);
-            }
-            else{
-                throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
-            }
+//            }
+//            else{
+//                throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
+//            }
             return deleteResponseDto;
         }
 
