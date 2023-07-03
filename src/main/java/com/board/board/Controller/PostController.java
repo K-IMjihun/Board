@@ -1,13 +1,17 @@
 package com.board.board.Controller;
-import com.board.board.Dto.PostDto.*;
 
+import com.board.board.Dto.PostDto.DeleteRequestDto;
+import com.board.board.Dto.PostDto.DeleteResponseDto;
+import com.board.board.Dto.PostDto.PostRequestDto;
+import com.board.board.Dto.PostDto.PostResponseDto;
 import com.board.board.Service.PostService;
+import jakarta.servlet.ServletRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/posts")
+@RequestMapping("/api/post")
 public class PostController {
 
     private final PostService postService;
@@ -18,9 +22,9 @@ public class PostController {
     }
 
     @PostMapping
-    public PostResponseDto createBoard(@RequestBody PostRequestDto postRequestDto) {
+    public PostResponseDto createBoard(ServletRequest request, @RequestBody PostRequestDto postRequestDto) {
         // RequestDto -> Entity
-        return postService.createPost(postRequestDto);
+        return postService.createPost(request, postRequestDto);
     }
 
 

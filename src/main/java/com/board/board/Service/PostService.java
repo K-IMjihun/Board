@@ -5,7 +5,11 @@ import com.board.board.Dto.PostDto.DeleteResponseDto;
 import com.board.board.Dto.PostDto.PostRequestDto;
 import com.board.board.Dto.PostDto.PostResponseDto;
 import com.board.board.Entity.Post;
+import com.board.board.Jwt.JwtUtil;
 import com.board.board.Repository.PostRepository;
+import io.jsonwebtoken.Claims;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,10 +20,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
+    private final JwtUtil jwtUtil;
 
+    public PostResponseDto createPost(ServletRequest request, PostRequestDto postRequestDto)  {
 
-    public PostResponseDto createPost(PostRequestDto postRequestDto) {
-        Post post = new Post(postRequestDto);
+        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+
+        String tokenValue = jwtUtil.getTokenFromRequest(httpServletRequest);
+        String token = jwtUtil.substringToken(tokenValue);
+
+        // 토큰에서 사용자 정보 가져오기
+        Claims info = jwtUtil.getUserInfoFromToken(token);
+        String username = info.getSubject();
+
+        Post post = new Post(postRequestDto, username);
 
         postRepository.save(post);
 
@@ -80,4 +94,5 @@ public class PostService {
         return postRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("선택한 게시글이 존재하지 않습니다."));
     }
+
 }
