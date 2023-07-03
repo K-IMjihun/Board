@@ -23,16 +23,7 @@ public class PostService {
     private final JwtUtil jwtUtil;
 
     public PostResponseDto createPost(ServletRequest request, PostRequestDto postRequestDto)  {
-
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-
-        String tokenValue = jwtUtil.getTokenFromRequest(httpServletRequest);
-        String token = jwtUtil.substringToken(tokenValue);
-
-        // 토큰에서 사용자 정보 가져오기
-        Claims info = jwtUtil.getUserInfoFromToken(token);
-        String username = info.getSubject();
-
+        String username = userCheck(request);
         Post post = new Post(postRequestDto, username);
 
         postRepository.save(post);
@@ -53,46 +44,62 @@ public class PostService {
     }
 
     @Transactional
-    public PostResponseDto putPost(Long id, PostRequestDto requestDto) {
+    public PostResponseDto putPost(ServletRequest request, Long id, PostRequestDto requestDto) {
 //          해당 메모가 DB에 존재하는지 확인
             Post post = findPost(id);
+
+            // 유저이름 확인
+            String username = userCheck(request);
             PostResponseDto postResponseDto;
 
         // 비밀번호 확인
-//            if(post.getPW().equals(requestDto.getPassword())) {
+            if(post.getUsername().equals(username)) {
                 post.update(requestDto);
-
                 postResponseDto = new PostResponseDto(post);
-//            }
-//            else{
-//                throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
-//            }
+            }
+            else{
+                throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
+            }
             return postResponseDto;
        }
 
-    public DeleteResponseDto deletePost(Long id, DeleteRequestDto deleteRequestDto) {
+    public DeleteResponseDto deletePost(ServletRequest request, Long id, DeleteRequestDto deleteRequestDto) {
         // 해당 메모가 DB에 존재하는지 확인
-            Post post = findPost(id);
-            DeleteResponseDto deleteResponseDto = new DeleteResponseDto();
+        Post post = findPost(id);
+        // 유저 이름 확인
+        String username = userCheck(request);
+        DeleteResponseDto deleteResponseDto = new DeleteResponseDto();
         deleteResponseDto.setSuccess(false);
 
-        // 비밀번호 확인
-//            if(post.getPW().equals(deleteRequestDto.getPassword())) {
-                postRepository.delete(post);
-                deleteResponseDto.setSuccess(true);
-//            }
-//            else{
-//                throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
-//            }
-            return deleteResponseDto;
+        //
+        if(post.getUsername().equals(username)) {
+            postRepository.delete(post);
+            deleteResponseDto.setSuccess(true);
         }
-
+        else{
+            throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
+        }
+        return deleteResponseDto;
+    }
 
 
 
     private Post findPost(Long id){
         return postRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("선택한 게시글이 존재하지 않습니다."));
+    }
+    private String userCheck(ServletRequest request){
+        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+
+        String tokenValue = jwtUtil.getTokenFromRequest(httpServletRequest);
+        String token = jwtUtil.substringToken(tokenValue);
+
+        // 토큰에서 사용자 정보 가져오기
+        Claims info = jwtUtil.getUserInfoFromToken(token);
+        String username = info.getSubject();
+
+        return username;
+
     }
 
 }

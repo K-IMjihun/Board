@@ -42,15 +42,15 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public PostResponseDto updatePost(@PathVariable(value = "id") Long id, @RequestBody PostRequestDto postRequestDto) {
+    public PostResponseDto updatePost(ServletRequest request, @PathVariable(value = "id") Long id, @RequestBody PostRequestDto postRequestDto) {
         // 해당 메모가 DB에 존재하는지 확인
 
-        return postService.putPost(id, postRequestDto);
+        return postService.putPost(request, id, postRequestDto);
     }
 
     @DeleteMapping("/{id}")
-    public DeleteResponseDto deleteMemo(@PathVariable Long id, @RequestBody DeleteRequestDto deleteRequestDto) {
-        return postService.deletePost(id, deleteRequestDto);
+    public DeleteResponseDto deleteMemo(ServletRequest request, @PathVariable Long id, @RequestBody DeleteRequestDto deleteRequestDto) {
+        return postService.deletePost(request, id, deleteRequestDto);
     }
 
 }
