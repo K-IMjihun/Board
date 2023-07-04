@@ -8,9 +8,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration  // Spring IoC Container에 수동등록하는 어노테이션
 public class PasswordConfig {
 
+    // BCrypt: 비밀번호 암호화
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-        // BCrypt: 비밀번호 암호화 hash함수. 아주 강력한 hash 메커니즘을 가짐
+
     }
 }

@@ -14,7 +14,6 @@ import lombok.ToString;
 public class User {
     @Id
     private String username;
-
     private String password;
 
     //사용자의 권한

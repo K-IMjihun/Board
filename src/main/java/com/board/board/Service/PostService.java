@@ -32,7 +32,6 @@ public class PostService {
         return postResponseDto;
     }
 
-
     public List<PostResponseDto> getPosts() {
         return postRepository.findAllByOrderByModifiedAtDesc().stream().map(PostResponseDto::new).toList();
     }
@@ -45,14 +44,10 @@ public class PostService {
 
     @Transactional
     public PostResponseDto putPost(ServletRequest request, Long id, PostRequestDto requestDto) {
-        // 해당 메모가 DB에 존재하는지 확인
             Post post = findPost(id);
-
-            // 유저이름 확인
             String username = userCheck(request);
             PostResponseDto postResponseDto;
 
-        // 비밀번호 확인
             if(post.getUsername().equals(username)) {
                 post.update(requestDto);
                 postResponseDto = new PostResponseDto(post);
@@ -64,13 +59,10 @@ public class PostService {
        }
 
     public DeleteResponseDto deletePost(ServletRequest request, Long id, DeleteRequestDto deleteRequestDto) {
-        // 해당 메모가 DB에 존재하는지 확인
         Post post = findPost(id);
-        // 유저 이름 확인
         String username = userCheck(request);
         DeleteResponseDto deleteResponseDto = new DeleteResponseDto();
 
-        //
         if(post.getUsername().equals(username)) {
             postRepository.delete(post);
             deleteResponseDto.setMsg("게시글 삭제 성공");
@@ -82,12 +74,11 @@ public class PostService {
         return deleteResponseDto;
     }
 
-
-
     private Post findPost(Long id){
         return postRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("선택한 게시글이 존재하지 않습니다."));
     }
+
     private String userCheck(ServletRequest request){
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 
@@ -99,7 +90,5 @@ public class PostService {
         String username = info.getSubject();
 
         return username;
-
     }
-
 }

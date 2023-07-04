@@ -1,4 +1,4 @@
-package com.board.board.Controller;
+package com.board.board.Controller.UserController;
 
 import com.board.board.Dto.UserDto.SignupRequestDto;
 import com.board.board.Service.UserService;
@@ -35,15 +35,21 @@ public class UserController {
         return "signup";
     }
 
+    @PostMapping("/user/login")
+    public String login() {
+        return "index";
+    }
+
     @PostMapping("/user/signup")
     public String signup(@RequestBody @Valid SignupRequestDto requestDto, BindingResult bindingResult) {
-        // Validation 예외처리
+
         log.info(requestDto.getUsername() + " , " + requestDto.getPassword());
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
         if(fieldErrors.size() > 0) {
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
                 log.error(fieldError.getField() + " 필드 : " + fieldError.getDefaultMessage());
             }
+
             return "redirect:/api/user/signup";
         }
 
