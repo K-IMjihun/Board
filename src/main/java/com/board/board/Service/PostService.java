@@ -45,7 +45,7 @@ public class PostService {
 
     @Transactional
     public PostResponseDto putPost(ServletRequest request, Long id, PostRequestDto requestDto) {
-//          해당 메모가 DB에 존재하는지 확인
+        // 해당 메모가 DB에 존재하는지 확인
             Post post = findPost(id);
 
             // 유저이름 확인
@@ -69,12 +69,12 @@ public class PostService {
         // 유저 이름 확인
         String username = userCheck(request);
         DeleteResponseDto deleteResponseDto = new DeleteResponseDto();
-        deleteResponseDto.setSuccess(false);
 
         //
         if(post.getUsername().equals(username)) {
             postRepository.delete(post);
-            deleteResponseDto.setSuccess(true);
+            deleteResponseDto.setMsg("게시글 삭제 성공");
+            deleteResponseDto.setStatusCode(200L);
         }
         else{
             throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");

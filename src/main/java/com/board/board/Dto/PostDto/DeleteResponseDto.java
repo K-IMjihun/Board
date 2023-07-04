@@ -4,5 +4,6 @@ import lombok.Data;
 
 @Data
 public class DeleteResponseDto {
-    private boolean success;
+    String msg;
+    Long statusCode;
 }
