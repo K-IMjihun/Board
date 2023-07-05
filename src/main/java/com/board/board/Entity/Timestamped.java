@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public abstract class Timestamped {
 
     @CreatedDate
-    @Column(updatable = false)  // 업데이트를 안함
+    @Column(updatable = false)  // 등록시간
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdAt;
 
