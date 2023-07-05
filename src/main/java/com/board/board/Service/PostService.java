@@ -1,7 +1,6 @@
 package com.board.board.Service;
 
-import com.board.board.Dto.PostDto.DeleteRequestDto;
-import com.board.board.Dto.PostDto.DeleteResponseDto;
+import com.board.board.Dto.ResultResponseDto;
 import com.board.board.Dto.PostDto.PostRequestDto;
 import com.board.board.Dto.PostDto.PostResponseDto;
 import com.board.board.Entity.Post;
@@ -13,7 +12,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Service
@@ -58,20 +56,18 @@ public class PostService {
             return postResponseDto;
        }
 
-    public DeleteResponseDto deletePost(ServletRequest request, Long id, DeleteRequestDto deleteRequestDto) {
+    public ResultResponseDto deletePost(ServletRequest request, Long id) {
         Post post = findPost(id);
         String username = userCheck(request);
-        DeleteResponseDto deleteResponseDto = new DeleteResponseDto();
 
         if(post.getUsername().equals(username)) {
             postRepository.delete(post);
-            deleteResponseDto.setMsg("게시글 삭제 성공");
-            deleteResponseDto.setStatusCode(200L);
         }
         else{
             throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
         }
-        return deleteResponseDto;
+        ResultResponseDto resultResponseDto = new ResultResponseDto("게시글 삭제 성공", 200L);
+        return resultResponseDto;
     }
 
     private Post findPost(Long id){
