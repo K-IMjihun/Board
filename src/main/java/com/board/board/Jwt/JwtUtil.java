@@ -1,19 +1,14 @@
 package com.board.board.Jwt;
 
-import com.board.board.Entity.UserRoleEnum;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
@@ -24,9 +19,6 @@ public class JwtUtil {
 
     // Header KEY(cookie의 name) 값
     public static final String AUTHORIZATION_HEADER = "Authorization";
-
-    // 사용자 권한 값의 KEY
-    public static final String AUTHORIZATION_KEY = "auth";
 
     // Token식별자. 토큰 앞에 붙일 용어(구분을 위해 한칸 띄워야 함)
     public static final String BEARER_PREFIX = "Bearer ";
@@ -52,33 +44,18 @@ public class JwtUtil {
         key = Keys.hmacShaKeyFor(bytes);
     }
     // 토큰 생성
-    public String createToken(String username, UserRoleEnum role) {
+    public String createToken(String username) {
         Date date = new Date();
 
         return BEARER_PREFIX +
                 Jwts.builder()
                         .setSubject(username) // 사용자 식별자값(ID)
-                        .claim(AUTHORIZATION_KEY, role) // 사용자 권한
                         .setExpiration(new Date(date.getTime() + TOKEN_TIME)) // 만료 시간
                         .setIssuedAt(date) // 발급일
                         .signWith(key, signatureAlgorithm) // 암호화 알고리즘
                         .compact();
     }
-    // JWT Cookie 에 저장
-    public void addJwtToCookie(String token, HttpServletResponse res) {
-        try {
-            token = URLEncoder.encode(token, "utf-8").replaceAll("\\+", "%20"); // Cookie Value 에는 공백이 불가능해서 encoding 진행
 
-            Cookie cookie = new Cookie(AUTHORIZATION_HEADER, token); // Name-Value
-            cookie.setPath("/");
-            cookie.setHttpOnly(true); // XSS 공격 보안
-
-            // Response 객체에 Cookie 추가
-            res.addCookie(cookie);
-        } catch (UnsupportedEncodingException e) {
-            logger.error(e.getMessage());
-        }
-    }
     // JWT 토큰 substring(Bearer 의 공백 때문에 사용하지 않으면 에러발생)
    public String substringToken(@NotNull String tokenValue) {
         if (tokenValue.startsWith(BEARER_PREFIX)) {
