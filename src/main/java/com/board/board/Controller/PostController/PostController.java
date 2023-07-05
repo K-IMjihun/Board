@@ -1,7 +1,6 @@
 package com.board.board.Controller.PostController;
 
-import com.board.board.Dto.PostDto.DeleteRequestDto;
-import com.board.board.Dto.PostDto.DeleteResponseDto;
+import com.board.board.Dto.ResultResponseDto;
 import com.board.board.Dto.PostDto.PostRequestDto;
 import com.board.board.Dto.PostDto.PostResponseDto;
 import com.board.board.Service.PostService;
@@ -16,7 +15,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public PostResponseDto createBoard(ServletRequest request, @RequestBody PostRequestDto postRequestDto) {
+    public PostResponseDto createPost(ServletRequest request, @RequestBody PostRequestDto postRequestDto) {
 
         return postService.createPost(request, postRequestDto);
     }
@@ -28,9 +27,9 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public DeleteResponseDto deleteMemo(ServletRequest request, @PathVariable Long id, @RequestBody DeleteRequestDto deleteRequestDto) {
+    public ResultResponseDto deletePost(ServletRequest request, @PathVariable Long id) {
 
-        return postService.deletePost(request, id, deleteRequestDto);
+        return postService.deletePost(request, id);
     }
 
 }
